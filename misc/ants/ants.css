@@ -1,0 +1,5 @@
+.game-map {
+    width: 1000px;
+    height: 500px;
+    background-image: url("sample_map.png");
+}

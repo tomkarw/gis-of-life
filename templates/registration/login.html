@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    <form method="POST">
+        {% csrf_token %}
+        <div class="login">
+            <div class="login-screen">
+                <div class="app-title">
+                    <h1>Login</h1>
+                </div>
+                <div class="login-form">
+                    {{ form.non_field_errors }}
+                    <div class="control-group">
+                        {{ form.username }}
+                        {{ form.username.errors }}
+                        <label class="login-field-icon fui-user" for="{{ form.username.id_for_label }}"></label></div>
+                    <div class="control-group">
+                        {{ form.password }}
+                        {{ form.password.errors }}
+                        <label class="login-field-icon fui-lock" for="{{ form.password.id_for_label }}"></label></div>
+                    <input type="submit" value="Log in" class="btn btn-primary btn-large btn-block">
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

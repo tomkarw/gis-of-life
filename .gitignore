@@ -1,2 +1,7 @@
 .idea/
 venv/
+
+# python related
+*.pyc
+*.pyo
+db.sqlite3
