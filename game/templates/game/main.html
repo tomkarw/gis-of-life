@@ -1,0 +1,19 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/ants.css' %}">
+    <script src="{% static 'js/ants.js' %}"></script>
+
+    <title>Ants</title>
+</head>
+<body>
+<div class="game-map">
+    <canvas id="game-canvas" width="1000" height="500">
+        <img src="{% static 'media/sample_map.png' %}" alt="sample map">
+    </canvas>
+</div>
+</body>
+</html>

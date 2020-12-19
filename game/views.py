@@ -9,8 +9,8 @@ def main(request, *args, **kwargs):
         game = Game.objects.get(token=kwargs["token"])
     except Game.DoesNotExist:
         return HttpResponseNotFound()
-    context = {
-        "game": game,
-        "map": game.map,
-    }
-    return render(request, "game/main.html", context=context)
+    # context = {
+    #     "game": game,
+    #     # "map": game.map,
+    # }
+    return render(request, "game/main.html", context=None)
