@@ -1,41 +1,23 @@
 {% extends 'base.html' %}
-{%  load static %}
-<link rel="stylesheet" href="{% static 'css/login.css' %}">
-{% block title %}Login{% endblock %}
+{% load bootstrap4 %}
+{% load static %}
+
+{% block title %} Login {% endblock %}
 
 {% block content %}
-    <form method="POST">
+    <form role="form" enctype="multipart/form-data" method="post">
         {% csrf_token %}
-        <div class="login">
-            <div class="login-screen">
-                <div class="app-title">
-                    <h1>Login</h1>
-                </div>
-                <div class="login-form">
-                    {{ form.non_field_errors }}
-                    <div class="control-group">
-                        {{ form.username }}
-                        {{ form.username.errors }}
-                        <label class="login-field-icon fui-user" for="{{ form.username.id_for_label }}"></label></div>
-                    <div class="control-group">
-                        {{ form.password }}
-                        {{ form.password.errors }}
-                        <label class="login-field-icon fui-lock" for="{{ form.password.id_for_label }}"></label></div>
-                    <div class="control-group">
-                        <input type="submit" value="Log in" class="btn btn-primary btn-large btn-block">
-                    </div>
-                    <div class="control-group">
-                        <a href="{% url 'password_reset' %}">
-                            <button class="btn btn-link btn-large btn-block">Forgot password?</button>
-                        </a>
-                    </div>
-                    <div class="control-group">
-                        <a href="{% url 'register' %}">
-                            <button class="btn btn-link btn-large btn-block">No account yet?</button>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+        {% bootstrap_form form %}
+        {% buttons submit='Login' %}{% endbuttons %}
     </form>
+    <div>
+        <a href="{% url 'password_reset' %}">
+            <button class="btn btn-link btn-large btn-block">Forgot password?</button>
+        </a>
+    </div>
+    <div>
+        <a href="{% url 'register' %}">
+            <button class="btn btn-link btn-large btn-block">No account yet?</button>
+        </a>
+    </div>
 {% endblock %}
