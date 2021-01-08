@@ -1,7 +1,7 @@
 import uuid
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, DeleteView
 
 from game.forms import GameCreateForm
@@ -41,3 +41,8 @@ class GameCreateView(LoginRequiredMixin, CreateView):
 
 class GameDeleteView(LoginRequiredMixin, DeleteView):
     template_name = "game/game-delete.html"
+    model = Game
+    success_url = reverse_lazy('game-list')
+
+    def get_object(self, queryset=None):
+        return Game.objects.get(token=self.kwargs["token"])

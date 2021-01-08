@@ -1,15 +1,13 @@
 {%  extends 'base.html' %}
 
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/ants.css' %}">
 
-{%  block title %} {{ game.name }} {% endblock %}
+{%  block title %} {{ object.name }} {% endblock %}
 
 {% block content %}
+    <a href="{% url 'game-delete' object.token %}"><button>Delete</button></a>
     <div class="game-map">
         <canvas id="game-canvas" width="1000" height="500"></canvas>
     </div>
     <img src="{{ object.image.url }}" alt="game map" width="{{ object.width }}" height="{{ object.height }}">
 {% endblock %}
-
-<script src="{% static 'js/ants.js' %}"></script>

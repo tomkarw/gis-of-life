@@ -6,9 +6,9 @@ from game.constants import MAP_MIN_WIDTH, MAP_MAX_WIDTH, MAP_MIN_HEIGHT, MAP_MAX
 
 
 class Game(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=255)
     token = models.CharField(unique=True, max_length=255)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="games")
+    name = models.CharField(max_length=255)
 
     # map details
     image = models.ImageField(upload_to='upload/')
