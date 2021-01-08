@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
-
+{%  load static %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
 {% block title %}Login{% endblock %}
 
 {% block content %}
@@ -20,7 +21,19 @@
                         {{ form.password }}
                         {{ form.password.errors }}
                         <label class="login-field-icon fui-lock" for="{{ form.password.id_for_label }}"></label></div>
-                    <input type="submit" value="Log in" class="btn btn-primary btn-large btn-block">
+                    <div class="control-group">
+                        <input type="submit" value="Log in" class="btn btn-primary btn-large btn-block">
+                    </div>
+                    <div class="control-group">
+                        <a href="{% url 'password_reset' %}">
+                            <button class="btn btn-link btn-large btn-block">Forgot password?</button>
+                        </a>
+                    </div>
+                    <div class="control-group">
+                        <a href="{% url 'register' %}">
+                            <button class="btn btn-link btn-large btn-block">No account yet?</button>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
