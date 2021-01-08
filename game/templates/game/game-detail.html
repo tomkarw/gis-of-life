@@ -1,0 +1,12 @@
+{%  extends 'base.html' %}
+
+{% load static %}
+
+{%  block title %} {{ game.name }} {% endblock %}
+
+{% block content %}
+    <div class="game-map">
+        <canvas id="game-canvas" width="1000" height="500"></canvas>
+    </div>
+    <img src="{{ object.image.url }}" alt="game map" width="{{ object.width }}" height="{{ object.height }}">
+{% endblock %}

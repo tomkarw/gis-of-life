@@ -1,7 +1,9 @@
 from django.urls import path
 
-from game.views import main
+from game import views
 
 urlpatterns = [
-    path("<str:token>/", main, name="main"),
+    path("", views.GameListView.as_view(), name="game-list"),
+    path("create/", views.GameCreateView.as_view(), name="game-create"),
+    path("<str:token>/", views.GameDetailView.as_view(), name="game-details"),
 ]

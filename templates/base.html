@@ -1,4 +1,5 @@
 {% load static %}
+{% load bootstrap4 %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -9,6 +10,28 @@
     <title>{% block title %}GIS of Life{% endblock %}</title>
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-dark info-color">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+               <a class="nav-link waves-effect waves-light" href="{% url 'homepage' %}">Homepage <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link waves-effect waves-light" href="{% url 'game-list' %}">Games</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link waves-effect waves-light" href="{% url 'login' %}">Login</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div>
+    {% autoescape off %}{% bootstrap_messages %}{% endautoescape %}
+</div>
 <main>
     {% block content %}{% endblock %}
 </main>

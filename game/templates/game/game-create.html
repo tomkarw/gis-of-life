@@ -1,0 +1,14 @@
+{%  extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% load static %}
+
+{%  block title %} {{ game.name }} {% endblock %}
+
+{% block content %}
+    <form role="form" enctype="multipart/form-data" method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% buttons submit='Create' reset="Cancel" %}{% endbuttons %}
+    </form>
+{% endblock %}
