@@ -1,16 +1,29 @@
+from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
+
+from game.constants import MAP_MIN_WIDTH, MAP_MAX_WIDTH, MAP_MIN_HEIGHT, MAP_MAX_HEIGHT
 
 
 class Game(models.Model):
-    name = models.CharField(max_length=255)
     token = models.CharField(unique=True, max_length=255)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="games")
+    name = models.CharField(max_length=255)
 
-
-class Map(models.Model):
-    game = models.OneToOneField(Game, on_delete=models.CASCADE, related_name="map")
+    # map details
     image = models.ImageField(upload_to='upload/')
-    width = models.PositiveIntegerField()
-    height = models.PositiveIntegerField()
+    width = models.PositiveIntegerField(
+        validators=[
+            MinValueValidator(MAP_MIN_WIDTH, message=f"Value must be between {MAP_MIN_WIDTH} and {MAP_MAX_WIDTH}"),
+            MaxValueValidator(MAP_MAX_WIDTH, message=f"Value must be between {MAP_MIN_WIDTH} and {MAP_MAX_WIDTH}")
+        ]
+    )
+    height = models.PositiveIntegerField(
+        validators=[
+            MinValueValidator(MAP_MIN_HEIGHT, message=f"Value must be between {MAP_MIN_HEIGHT} and {MAP_MAX_HEIGHT}"),
+            MaxValueValidator(MAP_MAX_HEIGHT, message=f"Value must be between {MAP_MIN_HEIGHT} and {MAP_MAX_HEIGHT}")
+        ]
+    )
 
 
 class Blob(models.Model):

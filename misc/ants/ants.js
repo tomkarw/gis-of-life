@@ -40,8 +40,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
     for (let blob of blobs) {
         ctx.fillStyle = `rgb(${blob.color.r}, ${blob.color.g}, ${blob.color.b})`;
         ctx.fillRect(blob.x, blob.y, BLOB_SIZE, BLOB_SIZE);
-
-        blob.x += BLOB_SIZE;
     }
 
     let game_loop = setInterval(drawBlobs, 250);
