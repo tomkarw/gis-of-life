@@ -25,7 +25,7 @@ def process_image(path_to_img):
 
     for i in range(len(image)):
         for j in range(len(image[i])):
-            if image[i][j] == [255, 0, 0]:
+            if image[i][j][0] == 255 and image[i][j][1] == 0 and image[i][j][2] == 0:
                 edged_image[i][j] = [255, 255, 255]
             else:
                 edged_image[i][j] = [0, 0, 0]
@@ -56,4 +56,42 @@ def process_image(path_to_img):
     color_palette = [[100, 0, 0], [0, 100, 0], [0, 0, 0]]
     res = simplify_colors(res, color_palette)
 
-    return res
+    dim = (1400, 500)
+    resized = cv.resize(res, dim, interpolation=cv.INTER_AREA)
+
+    step_size = 10
+    for y in range(0, resized.shape[0], step_size):
+        for x in range(0, resized.shape[1], step_size):
+            pixel = [0, 0, 0]
+            for j in range(y, y + step_size):
+                for i in range(x, x + step_size):
+                    if resized[j, i, 0] == 100:
+                        pixel[0] += 1
+                    elif resized[j, i, 1] == 100:
+                        pixel[1] += 1
+                    else:
+                        pixel[2] += 1
+
+            if pixel[0] > pixel[1] and pixel[0] > pixel[2]:
+                for j in range(y, y + step_size):
+                    for i in range(x, x + step_size):
+                        resized[j][i][0] = 100
+                        resized[j][i][1] = 0
+                        resized[j][i][2] = 0
+            elif pixel[1] > pixel[0] and pixel[1] > pixel[2]:
+                for j in range(y, y + step_size):
+                    for i in range(x, x + step_size):
+                        resized[j][i][0] = 0
+                        resized[j][i][1] = 100
+                        resized[j][i][2] = 0
+            else:
+                for j in range(y, y + step_size):
+                    for i in range(x, x + step_size):
+                        resized[j][i][0] = 0
+                        resized[j][i][1] = 0
+                        resized[j][i][2] = 0
+
+    dim = (140, 50)
+    final_map = cv.resize(resized, dim, interpolation=cv.INTER_AREA)
+
+    return final_map

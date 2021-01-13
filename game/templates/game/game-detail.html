@@ -5,9 +5,15 @@
 {%  block title %} {{ object.name }} {% endblock %}
 
 {% block content %}
-    <a href="{% url 'game-delete' object.token %}"><button>Delete</button></a>
+    <link rel="stylesheet" href="{% static 'css/game-detail.css' %}">
+
+    <a href="{% url 'game-delete' object.token %}"><button>Delete</button></a><br>
     <div class="game-map">
-        <canvas id="game-canvas" width="1000" height="500"></canvas>
+        <canvas id="game-canvas" width="{{ object.width }}" height="{{ object.height }}"></canvas>
     </div>
     <img src="{{ object.image.url }}" alt="game map" width="{{ object.width }}" height="{{ object.height }}">
+
+    <script src="{% static 'js/game-detail.js' %}"></script>
 {% endblock %}
+
+

@@ -6,6 +6,7 @@ from django.views.generic import ListView, DetailView, CreateView, DeleteView
 
 from game.forms import GameCreateForm
 from game.models import Game
+from image_processing.utils import process_image
 
 
 class GameListView(LoginRequiredMixin, ListView):
@@ -35,7 +36,10 @@ class GameCreateView(LoginRequiredMixin, CreateView):
         obj = form.save(commit=False)
         obj.token = str(uuid.uuid4())
         obj.user = self.request.user
+        obj.map = ""
         obj.save()
+        # TODO: this has to be done async as it takes ages
+        obj.map = process_image(obj.image.path).dumps()
         return super().form_valid(form)
 
 
