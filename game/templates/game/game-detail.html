@@ -14,6 +14,9 @@
     <img src="{{ object.image.url }}" alt="game map" width="{{ object.width }}" height="{{ object.height }}">
 
     <script src="{% static 'js/game-detail.js' %}"></script>
+    <script>
+        token = "{{ object.token }}"
+    </script>
 {% endblock %}
 
 

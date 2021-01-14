@@ -4,8 +4,10 @@ from json import JSONEncoder
 
 import numpy as np
 from rest_framework import status
+from rest_framework.authentication import SessionAuthentication
 from rest_framework.exceptions import NotFound
 from rest_framework.fields import CharField, SerializerMethodField
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.serializers import ModelSerializer, Serializer
 from rest_framework.views import APIView
@@ -26,19 +28,9 @@ class BlobFrameSerializer(ModelSerializer):
         fields = ("x", "y", "color", "age", "energy")
 
 
-# class GameFrameSerializer(ModelSerializer):
-#     blobs = SerializerMethodField()
-#
-#     class Meta:
-#         model = Game
-#         fields = ("map", "blobs")
-
-
-
-
 class GameFrameAPIView(APIView):
 
-    def post(self, request, **kwargs):
+    def get(self, request, **kwargs):
         try:
             game = Game.objects.get(token=kwargs["token"])
         except Game.DoesNotExist:

@@ -40,13 +40,6 @@ class Blob(models.Model):
     color = models.CharField(max_length=15, default="rgb(0,0,0)")
     brain = PickledObjectField()  # TODO: how to store NN state?
 
-    def save(self, **kwargs):
-        self.age = self.age or 0
-        self.energy = self.energy or 100
-        # TODO: process NN for storing
-        self.brain = self.brain or NeuralNetwork(no_of_in_nodes=8, no_of_out_nodes=7, no_of_hidden_nodes=8)
-        super().save(**kwargs)
-
     def act(self):
         left = self.game.map[self.x - 1][self.y]
         right = self.game.map[self.x + 1][self.y]

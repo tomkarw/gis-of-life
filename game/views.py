@@ -6,6 +6,7 @@ from django.views.generic import ListView, DetailView, CreateView, DeleteView
 
 from game.forms import GameCreateForm
 from game.models import Game
+from game.utils import create_blob
 from image_processing.utils import process_image
 
 
@@ -33,13 +34,15 @@ class GameCreateView(LoginRequiredMixin, CreateView):
         return reverse('game-details', kwargs={"token": self.object.token})
 
     def form_valid(self, form):
-        obj = form.save(commit=False)
-        obj.token = str(uuid.uuid4())
-        obj.user = self.request.user
-        obj.map = ""
-        obj.save()
+        game = form.save(commit=False)
+        game.token = str(uuid.uuid4())
+        game.user = self.request.user
+        game.map = ""
+        game.save()
         # TODO: this has to be done async as it takes ages
-        obj.map = process_image(obj.image.path).dumps()
+        game.map = process_image(game.image.path).dumps()
+        for _ in range(100):
+            create_blob(game)
         return super().form_valid(form)
 
 
