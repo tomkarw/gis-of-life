@@ -39,6 +39,23 @@ function drawFrame(data) {
 
     // TODO: draw map
     console.log(data.map)
+    for (let y = 0; y < data.map.length; y++) {
+        for (let x = 0; x < data.map.length; x++) {
+            switch (data.map[y][x]) {
+                case -1:
+                    ctx.fillStyle = 'rgb(0, 0, 100)';
+                    break;
+                case 0.5:
+                    ctx.fillStyle = 'rgb(0, 0, 0)';
+                    break;
+                case 1:
+                    ctx.fillStyle = 'rgb(0, 100, 0)';
+                    break;
+            }
+
+            ctx.fillRect(x * BLOB_SIZE, y * BLOB_SIZE, BLOB_SIZE, BLOB_SIZE);
+        }
+    }
 
     for (let blob of data.blobs) {
         ctx.fillStyle = blob.color;
