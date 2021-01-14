@@ -1,0 +1,59 @@
+import json
+import pickle
+from json import JSONEncoder
+
+import numpy as np
+from rest_framework import status
+from rest_framework.exceptions import NotFound
+from rest_framework.fields import CharField, SerializerMethodField
+from rest_framework.response import Response
+from rest_framework.serializers import ModelSerializer, Serializer
+from rest_framework.views import APIView
+
+from game.models import Blob, Game
+
+
+class NumpyArrayEncoder(JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        return JSONEncoder.default(self, obj)
+
+
+class BlobFrameSerializer(ModelSerializer):
+    class Meta:
+        model = Blob
+        fields = ("x", "y", "color", "age", "energy")
+
+
+# class GameFrameSerializer(ModelSerializer):
+#     blobs = SerializerMethodField()
+#
+#     class Meta:
+#         model = Game
+#         fields = ("map", "blobs")
+
+
+
+
+class GameFrameAPIView(APIView):
+
+    def post(self, request, **kwargs):
+        try:
+            game = Game.objects.get(token=kwargs["token"])
+        except Game.DoesNotExist:
+            raise NotFound(f"Game with token {kwargs['token']} not found")
+
+        serialized_map = json.dumps(pickle.loads(game.map), cls=NumpyArrayEncoder)
+        serialized_blobs = BlobFrameSerializer(game.blobs, many=True)
+        return Response(
+            {
+                "map": serialized_map,
+                "blobs": serialized_blobs.data
+            },
+            status=status.HTTP_200_OK
+        )
+
+
+
+

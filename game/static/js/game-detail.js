@@ -1,10 +1,10 @@
 class Blob {
-    constructor(x, y, color, age, memory) {
+    constructor(x, y, color, age, energy) {
         this.x = x;
         this.y = y;
         this.color = color;
         this.age = age;
-        this.memeory = memory;
+        this.energy = energy;
     }
 }
 
