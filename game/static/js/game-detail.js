@@ -9,7 +9,7 @@ class Blob {
 }
 
 BLOB_SIZE = 10;
-FRAME_URL = "http://127.0.0.1:8000/game/bbe04d48-6a57-48ce-a5e3-a1a0ffc43374/frame/"
+FRAME_URL = "http://127.0.0.1:8000/game/2eaf1709-1d25-4499-a0a6-3703fc459aa1/frame/"
 FRAME_RATE = 1000;
 
 document.addEventListener("DOMContentLoaded", (event) => {

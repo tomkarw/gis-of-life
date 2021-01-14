@@ -56,42 +56,24 @@ def process_image(path_to_img, map_width, map_height):
     color_palette = [[100, 0, 0], [0, 100, 0], [0, 0, 0]]
     res = simplify_colors(res, color_palette)
 
-    dim = (map_width * 10, map_height * 10)
+    dim = (map_width, map_height)
     resized = cv.resize(res, dim, interpolation=cv.INTER_AREA)
 
-    step_size = 10
-    for y in range(0, resized.shape[0], step_size):
-        for x in range(0, resized.shape[1], step_size):
+    for y in range(0, resized.shape[0]):
+        for x in range(0, resized.shape[1]):
             pixel = [0, 0, 0]
-            for j in range(y, y + step_size):
-                for i in range(x, x + step_size):
-                    if resized[j, i, 0] == 100:
-                        pixel[0] += 1
-                    elif resized[j, i, 1] == 100:
-                        pixel[1] += 1
-                    else:
-                        pixel[2] += 1
+            if resized[y, x, 0] == 100:
+                pixel[0] += 1
+            elif resized[y, x, 1] == 100:
+                pixel[1] += 1
+            else:
+                pixel[2] += 1
 
             if pixel[0] > pixel[1] and pixel[0] > pixel[2]:
-                for j in range(y, y + step_size):
-                    for i in range(x, x + step_size):
-                        resized[j][i][0] = 100
-                        resized[j][i][1] = 0
-                        resized[j][i][2] = 0
+                resized[y][x] = 1
             elif pixel[1] > pixel[0] and pixel[1] > pixel[2]:
-                for j in range(y, y + step_size):
-                    for i in range(x, x + step_size):
-                        resized[j][i][0] = 0
-                        resized[j][i][1] = 100
-                        resized[j][i][2] = 0
+                resized[y][x] = -1
             else:
-                for j in range(y, y + step_size):
-                    for i in range(x, x + step_size):
-                        resized[j][i][0] = 0
-                        resized[j][i][1] = 0
-                        resized[j][i][2] = 0
+                resized[y][x] = 0.5
 
-    dim = (map_width, map_height)
-    final_map = cv.resize(resized, dim, interpolation=cv.INTER_AREA)
-
-    return final_map
+    return resized[:, :, 0]
