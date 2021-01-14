@@ -9,17 +9,14 @@ class Blob {
 }
 
 BLOB_SIZE = 10;
-FRAME_URL = "http://127.0.0.1:8000/game/796b6367-99f6-4a2c-9a8f-85e42bd8df3a/frame/"
+FRAME_URL = "http://127.0.0.1:8000/game/bbe04d48-6a57-48ce-a5e3-a1a0ffc43374/frame/"
+FRAME_RATE = 1000;
 
 document.addEventListener("DOMContentLoaded", (event) => {
-    let game_loop = setInterval(processFrame, 250);
+    setInterval(processFrame, FRAME_RATE);
 }, false);
 
 function processFrame() {
-    let crf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
-
-    console.log(crf_token);
-
     $.ajax({
         type: "GET",
         url: FRAME_URL,
@@ -27,7 +24,6 @@ function processFrame() {
             drawFrame(res);
         }.bind(this),
         error: function (xhr, status, err) {
-            alert("Error: Something went wrong.");
             console.error(xhr, status, err.toString());
         }.bind(this),
         async: false
@@ -35,15 +31,18 @@ function processFrame() {
 }
 
 function drawFrame(data) {
+    console.log(data.blobs)
+
     let canvas = document.getElementById('game-canvas');
     let ctx = canvas.getContext('2d');
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // draw map
+    // TODO: draw map
 
     for (let blob of data.blobs) {
+        console.log(blob)
         ctx.fillStyle = blob.color;
-        ctx.fillRect(blob.x, blob.y, BLOB_SIZE, BLOB_SIZE); // TODO: blob.x * BLOB_SIZE
+        ctx.fillRect(blob.x, blob.y, BLOB_SIZE, BLOB_SIZE);
     }
 }

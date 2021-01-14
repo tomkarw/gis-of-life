@@ -19,7 +19,7 @@ def simplify_colors(bitmap, color_palette):
     return simplified_image
 
 
-def process_image(path_to_img):
+def process_image(path_to_img, map_width, map_height):
     image = cv.imread(path_to_img)
     edged_image = np.zeros_like(image)
 
@@ -56,7 +56,7 @@ def process_image(path_to_img):
     color_palette = [[100, 0, 0], [0, 100, 0], [0, 0, 0]]
     res = simplify_colors(res, color_palette)
 
-    dim = (1400, 500)
+    dim = (map_width * 10, map_height * 10)
     resized = cv.resize(res, dim, interpolation=cv.INTER_AREA)
 
     step_size = 10
@@ -91,7 +91,7 @@ def process_image(path_to_img):
                         resized[j][i][1] = 0
                         resized[j][i][2] = 0
 
-    dim = (140, 50)
+    dim = (map_width, map_height)
     final_map = cv.resize(resized, dim, interpolation=cv.INTER_AREA)
 
     return final_map

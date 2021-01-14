@@ -38,10 +38,12 @@ class GameCreateView(LoginRequiredMixin, CreateView):
         game.token = str(uuid.uuid4())
         game.user = self.request.user
         game.map = ""
+        game.width //= 10
+        game.height //= 10
         game.save()
         # TODO: this has to be done async as it takes ages
-        game.map = process_image(game.image.path).dumps()
-        for _ in range(100):
+        game.map = process_image(game.image.path, game.width, game.height).dumps()
+        for _ in range(100): # TODO: use bulk_create?
             create_blob(game)
         return super().form_valid(form)
 

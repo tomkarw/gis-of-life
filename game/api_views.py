@@ -13,6 +13,7 @@ from rest_framework.serializers import ModelSerializer, Serializer
 from rest_framework.views import APIView
 
 from game.models import Blob, Game
+from game.utils import advance_frame
 
 
 class NumpyArrayEncoder(JSONEncoder):
@@ -32,9 +33,11 @@ class GameFrameAPIView(APIView):
 
     def get(self, request, **kwargs):
         try:
-            game = Game.objects.get(token=kwargs["token"])
+            game = Game.objects.prefetch_related('blobs').get(token=kwargs["token"])
         except Game.DoesNotExist:
             raise NotFound(f"Game with token {kwargs['token']} not found")
+
+        advance_frame(game)
 
         serialized_map = json.dumps(pickle.loads(game.map), cls=NumpyArrayEncoder)
         serialized_blobs = BlobFrameSerializer(game.blobs, many=True)
