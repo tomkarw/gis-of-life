@@ -61,19 +61,11 @@ def process_image(path_to_img, map_width, map_height):
 
     for y in range(0, resized.shape[0]):
         for x in range(0, resized.shape[1]):
-            pixel = [0, 0, 0]
-            if resized[y, x, 0] == 100:
-                pixel[0] += 1
-            elif resized[y, x, 1] == 100:
-                pixel[1] += 1
+            if resized[y][x][0] == 100 and resized[y][x][1] == 0 and resized[y][x][2] == 0:
+                resized[y][x][0] = 1
+            elif resized[y][x][0] == 0 and resized[y][x][1] == 100 and resized[y][x][2] == 0:
+                resized[y][x][0] = -1
             else:
-                pixel[2] += 1
-
-            if pixel[0] > pixel[1] and pixel[0] > pixel[2]:
-                resized[y][x] = 1
-            elif pixel[1] > pixel[0] and pixel[1] > pixel[2]:
-                resized[y][x] = -1
-            else:
-                resized[y][x] = 0.5
+                resized[y][x][0] = 0.5
 
     return resized[:, :, 0]

@@ -9,7 +9,6 @@ class Blob {
 }
 
 BLOB_SIZE = 10;
-FRAME_URL = "http://127.0.0.1:8000/game/2eaf1709-1d25-4499-a0a6-3703fc459aa1/frame/"
 FRAME_RATE = 1000;
 
 document.addEventListener("DOMContentLoaded", (event) => {
@@ -17,9 +16,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
 }, false);
 
 function processFrame() {
+    console.log(`http://127.0.0.1:8000/game/${token}/frame/`)
     $.ajax({
         type: "GET",
-        url: FRAME_URL,
+        url: `http://127.0.0.1:8000/game/${token}/frame/`,
         success: function (res) {
             drawFrame(res);
         }.bind(this),
@@ -31,7 +31,6 @@ function processFrame() {
 }
 
 function drawFrame(data) {
-    console.log(data.blobs)
 
     let canvas = document.getElementById('game-canvas');
     let ctx = canvas.getContext('2d');
@@ -39,10 +38,10 @@ function drawFrame(data) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // TODO: draw map
+    console.log(data.map)
 
     for (let blob of data.blobs) {
-        console.log(blob)
         ctx.fillStyle = blob.color;
-        ctx.fillRect(blob.x, blob.y, BLOB_SIZE, BLOB_SIZE);
+        ctx.fillRect(blob.x * BLOB_SIZE, blob.y * BLOB_SIZE, BLOB_SIZE, BLOB_SIZE);
     }
 }

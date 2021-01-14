@@ -1,5 +1,6 @@
 import numpy as np
 
+from game.constants import MOVE_ENERGY_LOSS, BIRTH_THRESHOLD
 from game.utils import create_blob
 
 
@@ -7,7 +8,7 @@ def modulo(val, range):
     return val % (range - 1)
 
 
-def act(blob, map):
+def act(blob, map) -> bool:
     width = blob.game.width
     height = blob.game.height
     left = map[blob.y][modulo(blob.x - 1, width)]
@@ -20,14 +21,15 @@ def act(blob, map):
     if not move(blob, result[:4]):
         return False
 
-    action_index = result[4:6].argmax()
-    if action_index == 0:
+    if result[4] > BIRTH_THRESHOLD:
         birth(blob)
-    else:
-        eat(blob)
+
+    eat(blob)
+
+    return True
 
 
-def move(blob, move_decision):
+def move(blob, move_decision) -> bool:
     direction_index = move_decision[:4].argmax()
     if direction_index == 0:
         blob.y = modulo(blob.y - 1, blob.game.height)
@@ -37,7 +39,7 @@ def move(blob, move_decision):
         blob.x = modulo(blob.x - 1, blob.game.width)
     else:
         blob.x = modulo(blob.x + 1, blob.game.width)
-    blob.energy -= 1
+    blob.energy -= MOVE_ENERGY_LOSS
     if blob.energy <= 0:
         return False  # blob died from exhaustion
     return True  # blob gets to live another day
@@ -45,7 +47,7 @@ def move(blob, move_decision):
 
 def birth(blob):
     create_blob(blob.game)  # TODO: make them proper descendant
-    blob.energy = round(0.5 * blob.energy)
+    # blob.energy = round(0.5 * blob.energy)
 
 
 def eat(self):

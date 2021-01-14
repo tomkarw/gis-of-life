@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, DeleteView
 
+from game.constants import BLOB_SIZE, STARTING_BLOBS
 from game.forms import GameCreateForm
 from game.models import Game
 from game.utils import create_blob
@@ -23,6 +24,12 @@ class GameDetailView(LoginRequiredMixin, DetailView):
     def get_object(self, queryset=None):
         return Game.objects.get(token=self.kwargs["token"])
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["map_width"] = self.object.width * BLOB_SIZE
+        context["map_height"] = self.object.height * BLOB_SIZE
+        return context
+
 
 class GameCreateView(LoginRequiredMixin, CreateView):
     template_name = "game/game-create.html"
@@ -38,12 +45,12 @@ class GameCreateView(LoginRequiredMixin, CreateView):
         game.token = str(uuid.uuid4())
         game.user = self.request.user
         game.map = ""
-        game.width //= 10
-        game.height //= 10
+        game.width //= BLOB_SIZE
+        game.height //= BLOB_SIZE
         game.save()
-        # TODO: this has to be done async as it takes ages
+        # TODO: this has to be done async as it takes some time
         game.map = process_image(game.image.path, game.width, game.height).dumps()
-        for _ in range(100): # TODO: use bulk_create?
+        for _ in range(STARTING_BLOBS): # TODO: use bulk_create?
             create_blob(game)
         return super().form_valid(form)
 
