@@ -8,5 +8,6 @@ urlpatterns = [
     path("<str:token>/", views.GameDetailView.as_view(), name="game-details"),
     path("<str:token>/delete/", views.GameDeleteView.as_view(), name="game-delete"),
 
+    path("<str:token>/map/", api_views.GameMapAPIView.as_view(), name="game-map"),
     path("<str:token>/frame/", api_views.GameFrameAPIView.as_view(), name="game-frame"),
 ]

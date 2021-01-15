@@ -7,10 +7,10 @@
 {% block content %}
     <link rel="stylesheet" href="{% static 'css/game-detail.css' %}">
 
-    <a href="{% url 'game-delete' object.token %}"><button>Delete</button></a><br>
     <div style="width: {{ map_width }}; height: {{ map_height }}">
         <canvas id="game-canvas" width="{{ map_width }}" height="{{ map_height }}"></canvas>
     </div>
+    <a href="{% url 'game-delete' object.token %}"><button>Delete</button></a><br>
 
     <script>
         token = "{{ object.token }}"

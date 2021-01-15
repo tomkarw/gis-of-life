@@ -5,12 +5,14 @@
 {% block title %} Game list {% endblock %}
 
 {% block content %}
+    <link rel="stylesheet" href="{% static 'css/game-list.css' %}">
+
     {% for game in object_list %}
         <a href="{% url 'game-details' game.token %}">
-            <button type="button" class="btn btn-primary btn-lg btn-block">{{ game.name }}</button>
+            <button type="button" class="btn btn-primary btn-lg btn-block game-button">{{ game.name }}</button>
         </a>
     {% endfor %}
     <a href="{% url 'game-create' %}">
-        <button type="button" class="btn btn-primary btn-lg btn-block">New Game</button>
+        <button type="button" class="btn btn-primary btn-lg btn-block game-button">New Game</button>
     </a>
 {% endblock %}
