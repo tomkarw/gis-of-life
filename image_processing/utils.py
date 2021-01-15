@@ -1,6 +1,8 @@
 import cv2 as cv
 import numpy as np
 
+from game.constants import WATER_TILE, GROUND_TILE, FOOD_TILE
+
 
 def color_diff(c1, c2):
     return ((c1[0] - c2[0]) ** 2 + (c1[1] - c2[1]) ** 2 + (c1[2] - c2[2]) ** 2) ** 0.5
@@ -19,13 +21,13 @@ def simplify_colors(bitmap, color_palette):
     return simplified_image
 
 
-def process_image(path_to_img):
+def process_image(path_to_img, map_width, map_height):
     image = cv.imread(path_to_img)
     edged_image = np.zeros_like(image)
 
     for i in range(len(image)):
         for j in range(len(image[i])):
-            if image[i][j] == [255, 0, 0]:
+            if image[i][j][0] == 255 and image[i][j][1] == 0 and image[i][j][2] == 0:
                 edged_image[i][j] = [255, 255, 255]
             else:
                 edged_image[i][j] = [0, 0, 0]
@@ -56,4 +58,16 @@ def process_image(path_to_img):
     color_palette = [[100, 0, 0], [0, 100, 0], [0, 0, 0]]
     res = simplify_colors(res, color_palette)
 
-    return res
+    dim = (map_width, map_height)
+    resized = cv.resize(res, dim, interpolation=cv.INTER_AREA)
+
+    for y in range(0, resized.shape[0]):
+        for x in range(0, resized.shape[1]):
+            if resized[y][x][0] == 100 and resized[y][x][1] == 0 and resized[y][x][2] == 0:
+                resized[y][x][0] = FOOD_TILE
+            elif resized[y][x][0] == 0 and resized[y][x][1] == 100 and resized[y][x][2] == 0:
+                resized[y][x][0] = WATER_TILE
+            else:
+                resized[y][x][0] = GROUND_TILE
+
+    return resized[:, :, 0]
