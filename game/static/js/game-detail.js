@@ -34,7 +34,8 @@ function drawFrame(blobs) {
     let canvas = document.getElementById('game-canvas');
     let ctx = canvas.getContext('2d');
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let img = document.getElementById("game-img");
+    ctx.drawImage(img, 0, 0, width * BLOB_SIZE, height * BLOB_SIZE);
 
     for (let blob of blobs) {
         ctx.fillStyle = blob.color;
