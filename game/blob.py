@@ -47,7 +47,7 @@ def move(blob, move_decision) -> bool:
 
 def birth(blob):
     create_blob(blob.game)  # TODO: make them proper descendant
-    blob.energy = round(0.5 * blob.energy)
+    #blob.energy = round(0.5 * blob.energy)
 
 
 def eat(blob, map):
