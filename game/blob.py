@@ -1,6 +1,6 @@
 import numpy as np
 
-from game.constants import MOVE_ENERGY_LOSS, BIRTH_THRESHOLD
+from game.constants import MOVE_ENERGY_LOSS, BIRTH_THRESHOLD, FOOD_TILE
 from game.utils import create_blob
 
 
@@ -24,7 +24,7 @@ def act(blob, map) -> bool:
     if result[4] > BIRTH_THRESHOLD:
         birth(blob)
 
-    eat(blob)
+    eat(blob, map)
 
     return True
 
@@ -47,8 +47,9 @@ def move(blob, move_decision) -> bool:
 
 def birth(blob):
     create_blob(blob.game)  # TODO: make them proper descendant
-    # blob.energy = round(0.5 * blob.energy)
+    blob.energy = round(0.5 * blob.energy)
 
 
-def eat(self):
-    self.energy = 100
+def eat(blob, map):
+    if map[blob.y][blob.x] == FOOD_TILE:
+        blob.energy = 100

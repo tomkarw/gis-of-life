@@ -1,6 +1,8 @@
 import cv2 as cv
 import numpy as np
 
+from game.constants import WATER_TILE, GROUND_TILE, FOOD_TILE
+
 
 def color_diff(c1, c2):
     return ((c1[0] - c2[0]) ** 2 + (c1[1] - c2[1]) ** 2 + (c1[2] - c2[2]) ** 2) ** 0.5
@@ -62,10 +64,10 @@ def process_image(path_to_img, map_width, map_height):
     for y in range(0, resized.shape[0]):
         for x in range(0, resized.shape[1]):
             if resized[y][x][0] == 100 and resized[y][x][1] == 0 and resized[y][x][2] == 0:
-                resized[y][x][0] = 1
+                resized[y][x][0] = FOOD_TILE
             elif resized[y][x][0] == 0 and resized[y][x][1] == 100 and resized[y][x][2] == 0:
-                resized[y][x][0] = -1
+                resized[y][x][0] = WATER_TILE
             else:
-                resized[y][x][0] = 0.5
+                resized[y][x][0] = GROUND_TILE
 
     return resized[:, :, 0]
