@@ -1,6 +1,8 @@
+from random import random
+
 import numpy as np
 
-from game.constants import MOVE_ENERGY_LOSS, BIRTH_THRESHOLD, FOOD_TILE
+from game.constants import MOVE_ENERGY_LOSS, BIRTH_THRESHOLD, FOOD_TILE, MAX_BLOB_COUNT
 from game.utils import create_blob
 
 
@@ -46,8 +48,19 @@ def move(blob, move_decision) -> bool:
 
 
 def birth(blob):
-    create_blob(blob.game)  # TODO: make them proper descendant
-    #blob.energy = round(0.5 * blob.energy)
+    from game.models import Blob
+    if blob.game.blobs.count() < MAX_BLOB_COUNT:
+        Blob.objects.create(
+            game=blob.game,
+            x=blob.x,
+            y=blob.y,
+            age=0,
+            energy=round(0.5 * blob.energy),
+            color=blob.color,
+            memory=random(),
+            brain=blob.brain
+        )
+    blob.energy = round(0.5 * blob.energy)
 
 
 def eat(blob, map):

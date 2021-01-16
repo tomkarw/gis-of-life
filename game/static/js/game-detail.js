@@ -9,7 +9,7 @@ class Blob {
 }
 
 BLOB_SIZE = 10;
-FRAME_RATE = 1000;
+FRAME_RATE = 250;
 
 document.addEventListener("DOMContentLoaded", (event) => {
     setInterval(processFrame, FRAME_RATE);
