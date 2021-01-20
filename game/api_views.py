@@ -39,16 +39,18 @@ class GameFrameAPIView(APIView):
 
         advance_frame(game)
 
-        serialized_map = json.dumps(pickle.loads(game.map), cls=NumpyArrayEncoder)
         serialized_blobs = BlobFrameSerializer(game.blobs, many=True)
-        return Response(
-            {
-                "map": serialized_map,
-                "blobs": serialized_blobs.data
-            },
-            status=status.HTTP_200_OK
-        )
+        return Response(serialized_blobs.data, status=status.HTTP_200_OK)
 
 
+class GameMapAPIView(APIView):
 
+    def get(self, request, **kwargs):
+        try:
+            game = Game.objects.prefetch_related('blobs').get(token=kwargs["token"])
+        except Game.DoesNotExist:
+            raise NotFound(f"Game with token {kwargs['token']} not found")
+
+        serialized_map = json.dumps(pickle.loads(game.map), cls=NumpyArrayEncoder)
+        return Response(serialized_map, status=status.HTTP_200_OK)
 

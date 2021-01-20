@@ -9,14 +9,13 @@ class Blob {
 }
 
 BLOB_SIZE = 10;
-FRAME_RATE = 1000;
+FRAME_RATE = 250;
 
 document.addEventListener("DOMContentLoaded", (event) => {
     setInterval(processFrame, FRAME_RATE);
 }, false);
 
 function processFrame() {
-    console.log(`http://127.0.0.1:8000/game/${token}/frame/`)
     $.ajax({
         type: "GET",
         url: `http://127.0.0.1:8000/game/${token}/frame/`,
@@ -30,34 +29,15 @@ function processFrame() {
     });
 }
 
-function drawFrame(data) {
+function drawFrame(blobs) {
 
     let canvas = document.getElementById('game-canvas');
     let ctx = canvas.getContext('2d');
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let img = document.getElementById("game-img");
+    ctx.drawImage(img, 0, 0, width * BLOB_SIZE, height * BLOB_SIZE);
 
-    // TODO: draw map
-    console.log(data.map)
-    for (let y = 0; y < data.map.length; y++) {
-        for (let x = 0; x < data.map.length; x++) {
-            switch (data.map[y][x]) {
-                case -1:
-                    ctx.fillStyle = 'rgb(0, 0, 100)';
-                    break;
-                case 0.5:
-                    ctx.fillStyle = 'rgb(0, 0, 0)';
-                    break;
-                case 1:
-                    ctx.fillStyle = 'rgb(0, 100, 0)';
-                    break;
-            }
-
-            ctx.fillRect(x * BLOB_SIZE, y * BLOB_SIZE, BLOB_SIZE, BLOB_SIZE);
-        }
-    }
-
-    for (let blob of data.blobs) {
+    for (let blob of blobs) {
         ctx.fillStyle = blob.color;
         ctx.fillRect(blob.x * BLOB_SIZE, blob.y * BLOB_SIZE, BLOB_SIZE, BLOB_SIZE);
     }
