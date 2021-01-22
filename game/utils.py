@@ -9,7 +9,7 @@ def create_blob(game):
         game=game,
         x=randint(0, game.width - 1),
         y=randint(0, game.height - 1),
-        color=f"rgb({randint(0,255)}, {randint(0,255)}, {randint(0,255)})",
+        color=f"rgb({randint(127,255)}, {randint(127,255)}, {randint(127,255)})",
         memory=random(),
         brain=NeuralNetwork(no_of_in_nodes=8, no_of_out_nodes=7, no_of_hidden_nodes=8)
     )
