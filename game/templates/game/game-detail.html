@@ -11,6 +11,16 @@
         <canvas id="game-canvas" width="{{ map_width }}" height="{{ map_height }}"></canvas>
     </div>
     <a href="{% url 'game-delete' object.token %}"><button>Delete</button></a><br>
+    <table id="blobs-list" class="table">
+        <thead>
+            <tr>
+                <th scope="col">Color</th>
+                <th scope="col">Age</th>
+                <th scope="col">Energy</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
     <img id="game-img" src="{% static 'media/game-background.png' %}" alt="game map" hidden>
     <script>
         token = "{{ object.token }}"
