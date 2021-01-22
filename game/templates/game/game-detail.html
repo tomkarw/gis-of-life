@@ -7,11 +7,26 @@
 {% block content %}
     <link rel="stylesheet" href="{% static 'css/game-detail.css' %}">
 
-    <div style="width: {{ map_width }}; height: {{ map_height }}">
+    <div class="canvas-div" style="width: {{ map_width }}; height: {{ map_height }}">
         <canvas id="game-canvas" width="{{ map_width }}" height="{{ map_height }}"></canvas>
     </div>
-    <a href="{% url 'game-delete' object.token %}"><button>Delete</button></a><br>
-    <p> Blob count: <span id="blob-count">0</span></p>
+    <a href="{% url 'game-delete' object.token %}"><button class="btn btn-primary btn-lg btn-block game-button">Delete</button></a><br>
+    <table id="blobs-stats" class="table">
+        <thead>
+            <tr>
+                <th scope="col">Count</th>
+                <th scope="col">Average age</th>
+                <th scope="col">Average energy</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="col"><span id="blob-count">0</span></th>
+                <th scope="col"><span id="blob-avg-age">0</span></th>
+                <th scope="col"><span id="blob-avg-energy">0</span></th>
+            </tr>
+        </tbody>
+    </table>
     <table id="blobs-list" class="table">
         <thead>
             <tr>

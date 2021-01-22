@@ -42,7 +42,9 @@ def move(blob, move_decision) -> bool:
         blob.x = modulo(blob.x - 1, blob.game.width)
     else:
         blob.x = modulo(blob.x + 1, blob.game.width)
+
     blob.energy -= MOVE_ENERGY_LOSS
+
     if blob.energy <= 0:
         return False  # blob died from exhaustion
     return True  # blob gets to live another day

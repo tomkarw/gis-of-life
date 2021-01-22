@@ -76,6 +76,7 @@ def process_image(path_to_img, map_width, map_height):
                     else:
                         pixel[2] += 1
 
+            # small map creation
             if pixel[0] > pixel[1] and pixel[0] > pixel[2]:
                 small_map[y // 10][x // 10] = WATER_TILE
 
@@ -83,5 +84,28 @@ def process_image(path_to_img, map_width, map_height):
                 small_map[y // 10][x // 10] = FOOD_TILE
             else:
                 small_map[y // 10][x // 10] = GROUND_TILE
+
+            # big map creation
+            if pixel[0] > pixel[1] and pixel[0] > pixel[2]:
+                for j in range(y, y + step):
+                    for i in range(x, x + step):
+                        resized[j][i][0] = 100
+                        resized[j][i][1] = 0
+                        resized[j][i][2] = 0
+            elif pixel[1] > pixel[0] and pixel[1] > pixel[2]:
+                for j in range(y, y + step):
+                    for i in range(x, x + step):
+                        resized[j][i][0] = 0
+                        resized[j][i][1] = 100
+                        resized[j][i][2] = 0
+            else:
+                for j in range(y, y + step):
+                    for i in range(x, x + step):
+                        resized[j][i][0] = 0
+                        resized[j][i][1] = 0
+                        resized[j][i][2] = 0
+
+    cv.imwrite(path_to_img, resized)
+    # image = cv.imread(path_to_img)
 
     return small_map

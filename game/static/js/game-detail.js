@@ -42,6 +42,12 @@ function drawFrame(blobs) {
 
     blobs.sort((a, b) => a.age < b.age);
 
+    $('#blob-count').text(blobs.length);
+    let avg_age = blobs.reduce((acc, blob) => acc + blob.age, 0) / blobs.length;
+    $('#blob-avg-age').text(Math.round(avg_age * 100) / 100);
+    let avg_energy = blobs.reduce((acc, blob) => acc + blob.energy, 0) / blobs.length;
+    $('#blob-avg-energy').text(Math.round(avg_energy * 100) / 100);
+
     for (let blob of blobs) {
         ctx.fillStyle = blob.color;
         ctx.fillRect(blob.x * BLOB_SIZE, blob.y * BLOB_SIZE, BLOB_SIZE, BLOB_SIZE);
