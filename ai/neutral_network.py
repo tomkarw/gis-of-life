@@ -1,3 +1,6 @@
+from copy import deepcopy
+from random import random
+
 import numpy as np
 from scipy.stats import truncnorm
 from scipy.special import expit as activation_function
@@ -44,3 +47,11 @@ class NeuralNetwork:
         input_hidden = activation_function(self.weights_in_hidden @ input_vector)
         output_vector = activation_function(self.weights_hidden_out @ input_hidden)
         return output_vector
+
+    def new_evolved_brain(self):
+        new_nn = deepcopy(self)
+        for weight in new_nn.weights_hidden_out:
+            weight += 0.05 - random() / 10
+        for weight in new_nn.weights_in_hidden:
+            weight += 0.05 - random() / 10
+        return new_nn

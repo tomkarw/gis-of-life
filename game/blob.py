@@ -1,9 +1,7 @@
-from random import random
-
 import numpy as np
 
 from game.constants import MOVE_ENERGY_LOSS, BIRTH_THRESHOLD, FOOD_TILE, MAX_BLOB_COUNT
-from game.utils import create_blob
+from game.utils import get_random_light_color
 
 
 def modulo(val, range):
@@ -23,10 +21,13 @@ def act(blob, map) -> bool:
     if not move(blob, result[:4]):
         return False
 
-    if result[4] > BIRTH_THRESHOLD:
+    if blob.age % 10 == 0:
         birth(blob)
 
-    eat(blob, map)
+    if map[blob.y][blob.x] == FOOD_TILE:
+        eat(blob, map)
+
+    blob.age += 1
 
     return True
 
@@ -55,12 +56,12 @@ def birth(blob):
             x=blob.x,
             y=blob.y,
             age=0,
-            energy=round(0.5 * blob.energy),
-            color=blob.color,
-            memory=random(),
-            brain=blob.brain
+            energy=round(0.80 * blob.energy),
+            color=get_random_light_color(),
+            memory=blob.memory,
+            brain=blob.brain.new_evolved_brain()
         )
-    blob.energy = round(0.5 * blob.energy)
+        blob.energy = round(0.80 * blob.energy)
 
 
 def eat(blob, map):

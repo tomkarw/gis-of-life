@@ -22,7 +22,8 @@
         {% csrf_token %}
         {% bootstrap_form form %}
         <div id="map" class="map"></div>
-        {% buttons id="create-button" submit='Create' reset="Cancel" %}{% endbuttons %}
+
+        <button id="create-button">Create</button>
     </form>
 
     <script src="{% static 'js/game-create.js' %}"></script>

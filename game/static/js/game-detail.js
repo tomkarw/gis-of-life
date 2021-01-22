@@ -40,6 +40,8 @@ function drawFrame(blobs) {
     var tbodyRef = document.getElementById('blobs-list').getElementsByTagName('tbody')[0];
     tbodyRef.innerHTML = "";
 
+    blobs.sort((a, b) => a.age < b.age);
+
     for (let blob of blobs) {
         ctx.fillStyle = blob.color;
         ctx.fillRect(blob.x * BLOB_SIZE, blob.y * BLOB_SIZE, BLOB_SIZE, BLOB_SIZE);

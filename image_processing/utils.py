@@ -56,18 +56,32 @@ def process_image(path_to_img, map_width, map_height):
     res = cv.bitwise_or(res, edged_image)
 
     color_palette = [[100, 0, 0], [0, 100, 0], [0, 0, 0]]
-    res = simplify_colors(res, color_palette)
+    resized = simplify_colors(res, color_palette)
+    resized = cv.resize(resized, (map_width*10, map_height*10), interpolation=cv.INTER_AREA)
 
     dim = (map_width, map_height)
-    resized = cv.resize(res, dim, interpolation=cv.INTER_AREA)
 
-    for y in range(0, resized.shape[0]):
-        for x in range(0, resized.shape[1]):
-            if resized[y][x][0] == 100 and resized[y][x][1] == 0 and resized[y][x][2] == 0:
-                resized[y][x][0] = FOOD_TILE
-            elif resized[y][x][0] == 0 and resized[y][x][1] == 100 and resized[y][x][2] == 0:
-                resized[y][x][0] = WATER_TILE
+    step = 10
+    small_map = np.zeros(dim)
+
+    for y in range(0, resized.shape[0], step):
+        for x in range(0, resized.shape[1], step):
+            pixel = [0, 0, 0]
+            for j in range(y, y + step):
+                for i in range(x, x + step):
+                    if resized[j, i, 0] == 100:
+                        pixel[0] += 1
+                    elif resized[j, i, 1] == 100:
+                        pixel[1] += 1
+                    else:
+                        pixel[2] += 1
+
+            if pixel[0] > pixel[1] and pixel[0] > pixel[2]:
+                small_map[y // 10][x // 10] = WATER_TILE
+
+            elif pixel[1] > pixel[0] and pixel[1] > pixel[2]:
+                small_map[y // 10][x // 10] = FOOD_TILE
             else:
-                resized[y][x][0] = GROUND_TILE
+                small_map[y // 10][x // 10] = GROUND_TILE
 
-    return resized[:, :, 0]
+    return small_map
