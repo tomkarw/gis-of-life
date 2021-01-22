@@ -10,6 +10,7 @@
     <div class="canvas-div" style="width: {{ map_width }}; height: {{ map_height }}">
         <canvas id="game-canvas" width="{{ map_width }}" height="{{ map_height }}"></canvas>
     </div>
+    <button id="add-blob-button" class="btn btn-primary btn-lg btn-block game-button">Add Blob</button><br>
     <a href="{% url 'game-delete' object.token %}"><button class="btn btn-primary btn-lg btn-block game-button">Delete</button></a><br>
     <table id="blobs-stats" class="table">
         <thead>

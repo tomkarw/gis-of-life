@@ -9,9 +9,10 @@ class Blob {
 }
 
 BLOB_SIZE = 10;
-FRAME_RATE = 250;
+FRAME_RATE = 500;
 
 document.addEventListener("DOMContentLoaded", (event) => {
+    $('#add-blob-button').click(addBlob);
     setInterval(processFrame, FRAME_RATE);
 }, false);
 
@@ -25,7 +26,18 @@ function processFrame() {
         error: function (xhr, status, err) {
             console.error(xhr, status, err.toString());
         }.bind(this),
-        async: false
+        async: true
+    });
+}
+
+function addBlob() {
+    $.ajax({
+        type: "GET",
+        url: `http://127.0.0.1:8000/game/${token}/add-blob/`,
+        error: function (xhr, status, err) {
+            console.error(xhr, status, err.toString());
+        }.bind(this),
+        async: true
     });
 }
 

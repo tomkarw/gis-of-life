@@ -10,4 +10,5 @@ urlpatterns = [
 
     path("<str:token>/map/", api_views.GameMapAPIView.as_view(), name="game-map"),
     path("<str:token>/frame/", api_views.GameFrameAPIView.as_view(), name="game-frame"),
+    path("<str:token>/add-blob/", api_views.GameAddBlobAPIView.as_view(), name="game-add-blob"),
 ]
