@@ -79,5 +79,5 @@ function createMapImage() {
             }
         }
     );
-    $('#map-form').append('image', mapCanvas.toDataURL());
+    $('#map-img').attr('src', mapCanvas.toDataURL());
 }
